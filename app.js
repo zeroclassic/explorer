@@ -1,7 +1,7 @@
 var express = require('express')
   , path = require('path')
   , bitcoinapi = require('bitcoin-node-api')
-  , favicon = require('static-favicon')
+  , favicon = require('serve-favicon')
   , logger = require('morgan')
   , cookieParser = require('cookie-parser')
   , bodyParser = require('body-parser')
@@ -39,12 +39,12 @@ if (settings.heavy != true) {
 }
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(favicon(path.join(__dirname, settings.favicon)));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
