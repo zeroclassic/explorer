@@ -24,6 +24,17 @@ block content
 						return json.data;
 					}
 				},
+				columnDefs: [
+					{
+						"targets": 3,
+						"data": 'country',
+						"render": function ( data, type, row )
+						{
+							if (row.country_code == '') return data;
+							return '<span class="flag-icon flag-icon-' + row.country_code + '"></span> ' + data;
+						}
+					}
+				],
 				columns: [
 					{ data: 'address', width: '25%' },
 					{ data: 'protocol', width: '25%' },

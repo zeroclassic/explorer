@@ -50,7 +50,8 @@ mongoose.connect(dbString, function(err) {
 								address: address,
 								protocol: body[i].version,
 								version: body[i].subver.replace('/', '').replace('/', ''),
-								country: geo.country
+								country: geo.country,
+								country_code: geo.countryCode.toLowerCase()
 							}, function(){
 								loop.next();
 							});
