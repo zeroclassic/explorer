@@ -2,7 +2,8 @@ var mongoose = require('mongoose')
 	, lib = require('../lib/explorer')
 	, db = require('../lib/database')
 	, settings = require('../lib/settings')
-	, request = require('request');
+	, request = require('request')
+    , Peers = require('../models/peers');
 
 var COUNT = 5000; //number of blocks to index
 
@@ -42,8 +43,14 @@ mongoose.connect(dbString, function(err) {
 				var address = trim(body[i].addr.substring(0, body[i].addr.lastIndexOf(":")), "[]");
 				db.find_peer(address, function(peer) {
 					if (peer) {
-						// peer already exists
-						loop.next();
+						// peer already exists, let's update protocol and version
+						Peers.updateOne({address:address},
+							{
+								protocol: body[i].version,
+								version: body[i].subver.replace('/', '').replace('/', '')
+							}, function(){
+								loop.next();
+							});
 					} else {
 						request({uri: 'http://ip-api.com/json/' + address, json: true}, function (error, response, geo) {
 							db.create_peer({
